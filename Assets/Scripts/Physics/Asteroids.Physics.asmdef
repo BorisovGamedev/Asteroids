@@ -1,9 +1,7 @@
 {
-    "name": "Services",
+    "name": "Asteroids.Physics",
     "rootNamespace": "",
-    "references": [
-        "GUID:5a2b821b9a7fd2d40b6ab72c338db638"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -1,0 +1,7 @@
+﻿{
+  "AsteroidMinSpeed": 5.0,
+  "AsteroidMaxSpeed": 12.0,
+  "UfoSpeed": 8.0,
+  "AsteroidFragmentsCount": 2,
+  "AsteroidFragmentSpeedMultiplier": 1.5
+}

@@ -1,0 +1,10 @@
+﻿{
+  "MaxHealth": 3,
+  "Acceleration": 15.0,
+  "MaxSpeed": 20.0,
+  "RotationSpeed": 180.0,
+  "MaxLaserCharges": 3,
+  "LaserCooldownSeconds": 5.0,
+  "BulletSpeed": 30.0,
+  "FireRateSeconds": 0.2
+}

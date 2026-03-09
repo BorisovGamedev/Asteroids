@@ -1,11 +1,7 @@
 {
-    "name": "Entities",
+    "name": "Asteroids.InputService",
     "rootNamespace": "",
-    "references": [
-        "GUID:5551e175998c96845964f56b5fc7bf9d",
-        "GUID:8806380758ae31e4d85b724169c72de7",
-        "GUID:40528cea04a96da469f0e6ff8892d95d"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

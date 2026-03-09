@@ -1,16 +1,16 @@
 {
-    "name": "UI",
+    "name": "Asteroids.Configs",
     "rootNamespace": "",
     "references": [
-        "GUID:5a2b821b9a7fd2d40b6ab72c338db638",
-        "GUID:afc439fa9e030b848b3b02318c2b141c",
-        "GUID:5551e175998c96845964f56b5fc7bf9d"
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
