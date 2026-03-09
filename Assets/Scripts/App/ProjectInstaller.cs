@@ -1,4 +1,5 @@
 ﻿using Asteroids.Configs;
+using Asteroids.Core;
 using Zenject;
 
 namespace Asteroids.App
@@ -8,6 +9,8 @@ namespace Asteroids.App
         public override void InstallBindings()
         {
             Container.Bind<IConfigProvider>().To<ConfigProvider>().AsSingle();
+            Container.Bind<GameStateMachine>().AsSingle();
+            Container.BindInterfacesTo<GameBootstrapper>().AsSingle();
         }
     }
 }
