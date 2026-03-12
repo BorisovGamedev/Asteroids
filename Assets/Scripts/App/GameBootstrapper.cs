@@ -10,30 +10,26 @@ namespace Asteroids.App
         private readonly IConfigProvider _configProvider;
         private readonly GameStateMachine _stateMachine;
 
-        // Zenject сам подставит сюда зависимости через конструктор
         public GameBootstrapper(IConfigProvider configProvider, GameStateMachine stateMachine)
         {
             _configProvider = configProvider;
             _stateMachine = stateMachine;
         }
 
-        // Этот метод вызывается автоматически при старте сцены
         public void Initialize()
         {
             _stateMachine.ChangeState(GameState.Bootstrap);
-            LoadGameAsync().Forget(); // .Forget() позволяет запустить асинхронную задачу без ожидания
+            LoadGameAsync().Forget();
         }
 
         private async UniTaskVoid LoadGameAsync()
         {
             UnityEngine.Debug.Log("Загрузка конфигов...");
             
-            // Ждем, пока распарсятся JSON файлы
             await _configProvider.LoadAllConfigsAsync();
             
             UnityEngine.Debug.Log($"Конфиги загружены! Здоровье игрока: {_configProvider.Player.MaxHealth}");
 
-            // Переходим в главное меню
             _stateMachine.ChangeState(GameState.MainMenu);
         }
     }
