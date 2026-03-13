@@ -8,11 +8,11 @@ namespace Asteroids.App
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<GameBootstrapper>().AsSingle();
-            
             Container.Bind<IConfigProvider>().To<ConfigProvider>().AsSingle();
             
             Container.Bind<GameStateMachine>().AsSingle();
+            
+            Container.BindInterfacesTo<GameBootstrapper>().AsSingle();
         }
     }
 }
