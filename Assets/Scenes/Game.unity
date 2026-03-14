@@ -471,6 +471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 4134481469790460102, guid: 568710dad5205464c9ffcef4359bf41a, type: 3}
+  _bulletPrefab: {fileID: 5965460825808228701, guid: 41e62f04e20a42547a943c59322ac10b, type: 3}
+  _asteroidPrefab: {fileID: 697739491413734963, guid: c04ee2267ae1da7479b3e41ffbadbc79, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

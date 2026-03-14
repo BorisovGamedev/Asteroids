@@ -11,5 +11,9 @@
         public float LaserCooldownSeconds { get; set; }
         public float BulletSpeed { get; set; }
         public float FireRateSeconds { get; set; }
+        public float PlayerRadius { get; set; }
+        public float BulletRadius { get; set; }
+        public float BulletLifeTimeSeconds { get; set; }
+        public float BulletSpawnOffset { get; set; }
     }
 }

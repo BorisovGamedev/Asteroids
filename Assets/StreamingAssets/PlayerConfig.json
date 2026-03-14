@@ -7,5 +7,9 @@
   "MaxLaserCharges": 3,
   "LaserCooldownSeconds": 5.0,
   "BulletSpeed": 30.0,
-  "FireRateSeconds": 0.2
+  "FireRateSeconds": 0.2,
+  "PlayerRadius": 0.35,
+  "BulletRadius": 0.1,
+  "BulletLifeTimeSeconds": 2.0,
+  "BulletSpawnOffset": -0.3
 }

@@ -14,7 +14,7 @@ namespace Asteroids.Physics
             _worldHeight = configProvider.World.WorldHeight;
         }
 
-        public void Warp(CustomPhysicsBody body)
+        public void Wrap(CustomPhysicsBody body)
         {
             Vector2 position = body.Position;
             

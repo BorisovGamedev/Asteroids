@@ -11,14 +11,17 @@ namespace Asteroids.Physics
         public float MaxSpeed { get; set; }
         public float Drag { get; set; }
         
+        public float Radius { get; set; }
+        
         public Vector2 ForwardDirection => Quaternion.Euler(0, 0, Rotation) * Vector2.up;
 
-        public CustomPhysicsBody(Vector2 startPosition, float rotation, float maxSpeed, float drag)
+        public CustomPhysicsBody(Vector2 startPosition, float rotation, float maxSpeed, float drag, float radius = 0.5f)
         {
             Position = startPosition;
             Rotation = rotation;
             MaxSpeed = maxSpeed;
             Drag = drag;
+            Radius = radius;
             Velocity = Vector2.zero;
         }
 
@@ -42,6 +45,24 @@ namespace Asteroids.Physics
         public void Stop()
         {
             Velocity = Vector2.zero;
+        }
+
+        public bool IsCollidingWith(CustomPhysicsBody other)
+        {
+            float radiusSum = this.Radius + other.Radius;
+            
+            float sqrDistance = (this.Position - other.Position).sqrMagnitude;
+            
+            return sqrDistance <= (radiusSum * radiusSum);
+        }
+
+        public void BounceOff(CustomPhysicsBody other)
+        {
+            Vector2 pushDirection = (this.Position - other.Position).normalized;
+            
+            Velocity = pushDirection * (MaxSpeed * 0.8f);
+
+            this.Position += pushDirection * 0.1f;
         }
     }
 }
