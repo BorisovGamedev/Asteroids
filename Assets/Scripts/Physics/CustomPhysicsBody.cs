@@ -29,7 +29,7 @@ namespace Asteroids.Physics
 
         public void UpdateState(float deltaTime)
         {
-            Velocity = Velocity.normalized * MaxSpeed;
+            Velocity = Vector2.Lerp(Velocity, Vector2.zero, Drag * deltaTime);
 
             if (Velocity.sqrMagnitude > MaxSpeed * MaxSpeed)
             {

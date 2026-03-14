@@ -1,5 +1,6 @@
 ﻿using Asteroids.Configs;
 using Asteroids.Physics;
+using Asteroids.InputService;
 using UnityEngine;
 using Zenject;
 
@@ -9,14 +10,20 @@ namespace Asteroids.Entities
     {
         private readonly CustomPhysicsBody _physicsBody;
         private readonly ScreenWrapService _screenWrap;
-        private readonly Transform _playerViewTransform;
+        private readonly PlayerView _view;
         private readonly PlayerConfig _config;
+        private readonly IInputService _input;
 
-        public PlayerController(Transform playerViewTransform, PlayerConfig config, ScreenWrapService screenWrap)
+        public PlayerController(
+            PlayerView view, 
+            IConfigProvider configProvider, 
+            ScreenWrapService screenWrap,
+            IInputService input)
         {
-            _playerViewTransform = playerViewTransform;
-            _config = config;
+            _view = view;
+            _config = configProvider.Player;
             _screenWrap = screenWrap;
+            _input = input;
             
             _physicsBody = new CustomPhysicsBody(Vector2.zero, 0f, _config.MaxSpeed, _config.Drag);
         }
@@ -26,23 +33,22 @@ namespace Asteroids.Entities
             HandleInput();
             
             _physicsBody.UpdateState(Time.deltaTime);
-            
             _screenWrap.Warp(_physicsBody);
             
-            _playerViewTransform.position = _physicsBody.Position;
-            _playerViewTransform.rotation = Quaternion.Euler(0f, 0f, _physicsBody.Rotation);
+            _view.Transform.position = _physicsBody.Position;
+            _view.Transform.rotation = Quaternion.Euler(0f, 0f, _physicsBody.Rotation);
         }
 
         private void HandleInput()
         {
-            float turnInput = -UnityEngine.Input.GetAxis("Horizontal");
+            float turnInput = _input.Rotation;
 
             if (turnInput != 0)
             {
-                _physicsBody.Rotation += turnInput * _config.RotationSpeed * Time.deltaTime;
+                _physicsBody.Rotation += -turnInput * _config.RotationSpeed * Time.deltaTime;
             }
             
-            float forwardInput = UnityEngine.Input.GetAxis("Vertical");
+            float forwardInput = _input.ForwardThrust;
 
             if (forwardInput > 0)
             {

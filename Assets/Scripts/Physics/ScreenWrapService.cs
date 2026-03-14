@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Asteroids.Configs;
+using UnityEngine;
 
 namespace Asteroids.Physics
 {
@@ -7,10 +8,10 @@ namespace Asteroids.Physics
         private readonly float _worldWidth;
         private readonly float _worldHeight;
 
-        public ScreenWrapService(float worldWidth, float worldHeight)
+        public ScreenWrapService(IConfigProvider configProvider)
         {
-            _worldWidth = worldWidth;
-            _worldHeight = worldHeight;
+            _worldWidth = configProvider.World.WorldWidth;
+            _worldHeight = configProvider.World.WorldHeight;
         }
 
         public void Warp(CustomPhysicsBody body)

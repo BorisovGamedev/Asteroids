@@ -1,6 +1,6 @@
 ﻿{
-  "WorldWidth": 1000.0,
-  "WorldHeight": 1000.0,
+  "WorldWidth": 10.0,
+  "WorldHeight": 10.0,
   "MaxEnemiesOnScreen": 15,
   "SpawnDelaySeconds": 2.0
 }

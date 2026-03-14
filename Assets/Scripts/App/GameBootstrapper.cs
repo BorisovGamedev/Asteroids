@@ -1,6 +1,7 @@
 ﻿using Asteroids.Configs;
 using Asteroids.Core;
 using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Asteroids.App
@@ -25,12 +26,12 @@ namespace Asteroids.App
         private async UniTaskVoid LoadGameAsync()
         {
             UnityEngine.Debug.Log("Загрузка конфигов...");
-            
             await _configProvider.LoadAllConfigsAsync();
-            
             UnityEngine.Debug.Log($"Конфиги загружены! Здоровье игрока: {_configProvider.Player.MaxHealth}");
 
             _stateMachine.ChangeState(GameState.MainMenu);
+            
+            SceneManager.LoadScene("Game"); 
         }
     }
 }

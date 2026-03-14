@@ -1,5 +1,6 @@
 ﻿using Asteroids.Configs;
 using Asteroids.Core;
+using Asteroids.InputService;
 using Zenject;
 
 namespace Asteroids.App
@@ -12,7 +13,7 @@ namespace Asteroids.App
             
             Container.Bind<GameStateMachine>().AsSingle();
             
-            Container.BindInterfacesTo<GameBootstrapper>().AsSingle();
+            Container.Bind<IInputService>().To<DesktopInputService>().AsSingle();
         }
     }
 }

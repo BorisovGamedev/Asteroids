@@ -1,9 +1,9 @@
 ﻿{
   "MaxHealth": 3,
-  "Acceleration": 15.0,
-  "MaxSpeed": 20.0,
-  "Drag": 0.5,
-  "RotationSpeed": 180.0,
+  "Acceleration": 6.0,
+  "MaxSpeed": 6.0,
+  "RotationSpeed": 250.0,
+  "Drag": 1.33,
   "MaxLaserCharges": 3,
   "LaserCooldownSeconds": 5.0,
   "BulletSpeed": 30.0,
