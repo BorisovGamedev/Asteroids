@@ -1,11 +1,13 @@
 ﻿{
-  "AsteroidMinSpeed": 0.2,
-  "AsteroidMaxSpeed": 1.0,
-  "UfoSpeed": 2.0,
+  "AsteroidMinSpeed": 0.5,
+  "AsteroidMaxSpeed": 2.0,
   "AsteroidFragmentsCount": 2,
   "AsteroidFragmentSpeedMultiplier": 1.5,
-  "BigAsteroidRadius": 0.1,
-  "SmallAsteroidRadius": 0.04,
+  "BigAsteroidRadius": 0.25,
+  "SmallAsteroidRadius": 0.125,
   "BigAsteroidScale": 1.0,
-  "SmallAsteroidScale": 0.5
+  "SmallAsteroidScale": 0.5,
+  "UfoSpeed": 1.5,
+  "UfoRadius": 0.15,
+  "UfoScale": 1.0
 }

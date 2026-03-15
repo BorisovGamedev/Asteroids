@@ -31,6 +31,8 @@ namespace Asteroids.Entities
             _weaponService = weaponService;
             
             PhysicsBody = new CustomPhysicsBody(Vector2.zero, 0f, _config.MaxSpeed, _config.Drag, radius: _config.PlayerRadius);
+            
+            _view.DebugRadius = PhysicsBody.Radius;
         }
         
         public void Tick()

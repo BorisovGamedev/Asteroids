@@ -29,6 +29,16 @@ namespace Asteroids.Physics
         {
             Velocity += force * deltaTime;
         }
+        
+        public void SetVelocity(Vector2 newVelocity)
+        {
+            Velocity = newVelocity;
+            
+            if (Velocity.sqrMagnitude > MaxSpeed * MaxSpeed)
+            {
+                Velocity = Velocity.normalized * MaxSpeed;
+            }
+        }
 
         public void UpdateState(float deltaTime)
         {

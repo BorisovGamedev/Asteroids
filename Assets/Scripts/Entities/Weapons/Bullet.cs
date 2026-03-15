@@ -1,5 +1,7 @@
 ﻿using System.Threading;
+using Asteroids.Configs;
 using Asteroids.Physics;
+using UnityEngine;
 
 namespace Asteroids.Entities.Weapons
 {
@@ -9,11 +11,18 @@ namespace Asteroids.Entities.Weapons
         public CustomPhysicsBody PhysicsBody { get; }
         public CancellationTokenSource Cts { get; set; }
 
-        public Bullet(BulletView view, float radius )
+        public Bullet(BulletView view, PlayerConfig config)
         {
             View = view;
             
-            PhysicsBody = new CustomPhysicsBody(UnityEngine.Vector2.zero, 0f, 7f, drag: 0f, radius: radius);
+            PhysicsBody = new CustomPhysicsBody(
+                startPosition: Vector2.zero, 
+                rotation: 0f, 
+                maxSpeed: config.BulletSpeed,
+                drag: 0f,
+                radius: config.BulletRadius);
+                
+            View.DebugRadius = PhysicsBody.Radius;
         }
     }
 }

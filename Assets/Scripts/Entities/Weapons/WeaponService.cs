@@ -46,7 +46,7 @@ namespace Asteroids.Entities.Weapons
         private Bullet CreateBullet()
         {
             var view = _instantiator.InstantiatePrefabForComponent<BulletView>(_bulletPrefab);
-            return new Bullet(view, _config.BulletRadius);
+            return new Bullet(view, _config);
         }
 
         public void Fire(Vector2 spawnPosition, float rotation, Vector2 forwardDirection)

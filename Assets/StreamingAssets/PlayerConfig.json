@@ -6,10 +6,10 @@
   "Drag": 1.33,
   "MaxLaserCharges": 3,
   "LaserCooldownSeconds": 5.0,
-  "BulletSpeed": 30.0,
+  "BulletSpeed": 15.0,
   "FireRateSeconds": 0.2,
-  "PlayerRadius": 0.35,
-  "BulletRadius": 0.1,
+  "PlayerRadius": 0.133,
+  "BulletRadius": 0.04,
   "BulletLifeTimeSeconds": 2.0,
-  "BulletSpawnOffset": -0.3
+  "BulletSpawnOffset": -0.15
 }

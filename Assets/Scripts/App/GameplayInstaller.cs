@@ -1,6 +1,7 @@
 ﻿using Asteroids.Entities;
 using Asteroids.Entities.Weapons;
 using Asteroids.Entities.Enemies;
+using Asteroids.Entities.Enemies.Ufo;
 using Asteroids.Physics;
 using UnityEngine;
 using Zenject;
@@ -12,6 +13,7 @@ namespace Asteroids.App
         [SerializeField] private PlayerView _playerPrefab;
         [SerializeField] private BulletView _bulletPrefab;
         [SerializeField] private AsteroidView _asteroidPrefab;
+        [SerializeField] private UfoView _ufoPrefab;
 
         public override void InstallBindings()
         {
@@ -26,8 +28,10 @@ namespace Asteroids.App
             Container.BindInterfacesAndSelfTo<WeaponService>().AsSingle()
                 .WithArguments(_bulletPrefab);
             
-            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle()
-                .WithArguments(_asteroidPrefab);
+            Container.Bind<EnemyFactory>().AsSingle()
+                .WithArguments(_asteroidPrefab, _ufoPrefab);
+            
+            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
         }
     }
 }
