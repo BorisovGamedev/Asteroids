@@ -1,18 +1,17 @@
-﻿using Asteroids.Physics;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Asteroids.Entities.Enemies.Ufo
 {
     public class UfoChaseState : IUfoState
     {
-        private readonly CustomPhysicsBody _ufoPhysics;
-        private readonly CustomPhysicsBody _playerPhysics;
+        private readonly UfoEnemy _ufo;
+        private readonly PlayerController _player;
         private readonly float _speed;
 
-        public UfoChaseState(CustomPhysicsBody ufoPhysics, CustomPhysicsBody playerPhysics, float speed)
+        public UfoChaseState(UfoEnemy ufo, PlayerController player, float speed)
         {
-            _ufoPhysics = ufoPhysics;
-            _playerPhysics = playerPhysics;
+            _ufo = ufo;
+            _player = player;
             _speed = speed;
         }
 
@@ -20,11 +19,16 @@ namespace Asteroids.Entities.Enemies.Ufo
 
         public void Tick(float deltaTime)
         {
-            Vector2 directionToPlayer = (_playerPhysics.Position - _ufoPhysics.Position).normalized;
+            if (_player.IsDead || _player.IsInvulnerable)
+            {
+                _ufo.ChangeState(_ufo.WanderState);
+                return;
+            }
+
+            Vector2 directionToPlayer = (_player.PhysicsBody.Position - _ufo.PhysicsBody.Position).normalized;
             
-            _ufoPhysics.SetVelocity(directionToPlayer * _speed);
-            
-            _ufoPhysics.UpdateState(deltaTime);
+            _ufo.PhysicsBody.SetVelocity(directionToPlayer * _speed);
+            _ufo.PhysicsBody.UpdateState(deltaTime);
         }
 
         public void Exit() { }

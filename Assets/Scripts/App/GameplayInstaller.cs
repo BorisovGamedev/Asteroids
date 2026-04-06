@@ -3,6 +3,8 @@ using Asteroids.Entities.Weapons;
 using Asteroids.Entities.Enemies;
 using Asteroids.Entities.Enemies.Ufo;
 using Asteroids.Physics;
+using Asteroids.Core;
+using Asteroids.UI;
 using UnityEngine;
 using Zenject;
 
@@ -32,6 +34,12 @@ namespace Asteroids.App
                 .WithArguments(_asteroidPrefab, _ufoPrefab);
             
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<HudViewModel>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<GameSystemFacade>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameOverViewModel>().AsSingle();
         }
     }
 }

@@ -13,5 +13,6 @@
         public float UfoSpeed { get; set; }
         public float UfoRadius { get; set; }
         public float UfoScale { get; set; }
+        public float UfoAgroRadius { get; set; }
     }
 }

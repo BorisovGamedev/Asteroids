@@ -2,5 +2,10 @@
   "WorldWidth": 10.0,
   "WorldHeight": 10.0,
   "MaxEnemiesOnScreen": 15,
-  "SpawnDelaySeconds": 2.0
+  "SpawnDelaySeconds": 2.0,
+  "ScoreRewards": {
+    "AsteroidBig": 20,
+    "AsteroidSmall": 50,
+    "Ufo": 100
+  }
 }

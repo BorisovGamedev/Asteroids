@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Asteroids.Configs;
 using Asteroids.Core;
 using Asteroids.Entities.Weapons;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace Asteroids.Entities.Enemies
 {
-    public class EnemySpawner : ITickable
+    public class EnemySpawner : ITickable, IDisposable
     {
         private readonly EnemiesConfig _enemiesConfig;
         private readonly WorldConfig _worldConfig;
@@ -19,6 +20,8 @@ namespace Asteroids.Entities.Enemies
 
         private readonly CustomObjectPool<IEnemy> _enemyPool;
         
+        private SignalBus _signalBus;
+        
         private float _spawnTimer;
 
         public EnemySpawner(
@@ -26,7 +29,8 @@ namespace Asteroids.Entities.Enemies
             ScreenWrapService screenWrap,
             PlayerController player,
             WeaponService weaponService,
-            EnemyFactory factory)
+            EnemyFactory factory,
+            SignalBus signalBus)
         {
             _enemiesConfig = configProvider.Enemies;
             _worldConfig = configProvider.World;
@@ -34,12 +38,15 @@ namespace Asteroids.Entities.Enemies
             _player = player;
             _weaponService = weaponService;
             _factory = factory;
+            _signalBus = signalBus;
             
             _enemyPool = new CustomObjectPool<IEnemy>(
                 createFunc: () => _factory.Create(EnemyType.AsteroidBig),
                 actionOnGet: e => e.GameObject.SetActive(true),
                 actionOnRelease: e => e.GameObject.SetActive(false)
             );
+            
+            signalBus.Subscribe<LaserFiredSignal>(OnLaserFired);
         }
 
         public void Tick()
@@ -47,6 +54,11 @@ namespace Asteroids.Entities.Enemies
             HandleSpawning();
             UpdateMovement();
             CheckCollisions();
+        }
+        
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<LaserFiredSignal>(OnLaserFired);
         }
 
         private void HandleSpawning()
@@ -57,7 +69,7 @@ namespace Asteroids.Entities.Enemies
             {
                 _spawnTimer = 0f;
                 
-                if (Random.value < 0.2f) // Вынести в Json
+                if (UnityEngine.Random.value < 0.2f) // Вынести в Json
                 {
                     SpawnUfo();
                 }
@@ -73,9 +85,9 @@ namespace Asteroids.Entities.Enemies
             IEnemy enemy = GetEnemyFromPool(size == 2 ? EnemyType.AsteroidBig : EnemyType.AsteroidSmall);
             
             Vector2 spawnPos = specificPosition ?? GetRandomPositionOnEdge();
-            Vector2 randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+            Vector2 randomDirection = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
             
-            float baseSpeed = Random.Range(_enemiesConfig.AsteroidMinSpeed, _enemiesConfig.AsteroidMaxSpeed);
+            float baseSpeed = UnityEngine.Random.Range(_enemiesConfig.AsteroidMinSpeed, _enemiesConfig.AsteroidMaxSpeed);
             float finalSpeed = size == 2 ? baseSpeed : baseSpeed * _enemiesConfig.AsteroidFragmentSpeedMultiplier;
 
             ((Asteroid)enemy).Launch(spawnPos, randomDirection, finalSpeed, size, _enemiesConfig);
@@ -115,16 +127,22 @@ namespace Asteroids.Entities.Enemies
 
             foreach (var enemy in _enemyPool.ActiveItems)
             {
-                if (_player.PhysicsBody.IsCollidingWith(enemy.PhysicsBody))
+                if (!_player.IsInvulnerable && !_player.IsDead)
                 {
-                    Debug.Log($"{_player.PhysicsBody.Position} ударился об {enemy.Type}");
-                    _player.PhysicsBody.BounceOff(enemy.PhysicsBody);
+                    if (_player.PhysicsBody.IsCollidingWith(enemy.PhysicsBody))
+                    {
+                        _player.TakeDamage(enemy.PhysicsBody.Position);
+                
+                        enemy.PhysicsBody.BounceOff(_player.PhysicsBody);
+                    }
                 }
 
                 foreach (var bullet in _weaponService.GetActiveBullets())
                 {
                     if (bullet.PhysicsBody.IsCollidingWith(enemy.PhysicsBody))
                     {
+                        _signalBus.Fire(new EnemyKilledSignal(enemy.Type.ToString()));
+                        
                         enemiesToDestroy.Add(enemy);
                         bulletsToDestroy.Add(bullet);
                         break; 
@@ -156,8 +174,29 @@ namespace Asteroids.Entities.Enemies
             float w = _worldConfig.WorldWidth / 2f;
             float h = _worldConfig.WorldHeight / 2f;
 
-            if (Random.value > 0.5f) return new Vector2(Random.value > 0.5f ? w : -w, Random.Range(-h, h));
-            return new Vector2(Random.Range(-w, w), Random.value > 0.5f ? h : -h);
+            if (UnityEngine.Random.value > 0.5f) return new Vector2(UnityEngine.Random.value > 0.5f ? w : -w, UnityEngine.Random.Range(-h, h));
+            return new Vector2(UnityEngine.Random.Range(-w, w), UnityEngine.Random.value > 0.5f ? h : -h);
+        }
+        
+        private void OnLaserFired(LaserFiredSignal signal)
+        {
+            List<IEnemy> enemiesToDestroy = new List<IEnemy>();
+
+            foreach (var enemy in _enemyPool.ActiveItems)
+            {
+                if (PhysicsMath.RayIntersectsCircle(signal.Origin, signal.Direction, signal.Length, enemy.PhysicsBody.Position, enemy.PhysicsBody.Radius))
+                {
+                    _signalBus.Fire(new EnemyKilledSignal(enemy.Type.ToString()));
+                    enemiesToDestroy.Add(enemy);
+                }
+            }
+
+            foreach (var enemy in enemiesToDestroy)
+            {
+                _enemyPool.Release(enemy);
+            }
+    
+            Debug.Log($"Лазер уничтожил {enemiesToDestroy.Count} врагов!");
         }
     }
 }

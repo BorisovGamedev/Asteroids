@@ -6,7 +6,12 @@ namespace Asteroids.Physics
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; private set; }
-        public float Rotation { get; set; }
+        
+        public float Rotation
+        {
+            get => _rotation;
+            set => _rotation = PhysicsMath.NormalizeAngle(value);
+        }
         
         public float MaxSpeed { get; set; }
         public float Drag { get; set; }
@@ -14,6 +19,8 @@ namespace Asteroids.Physics
         public float Radius { get; set; }
         
         public Vector2 ForwardDirection => Quaternion.Euler(0, 0, Rotation) * Vector2.up;
+        
+        private float _rotation;
 
         public CustomPhysicsBody(Vector2 startPosition, float rotation, float maxSpeed, float drag, float radius = 0.5f)
         {

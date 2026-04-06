@@ -38,7 +38,7 @@ namespace Asteroids.Entities.Enemies
                     
                 case EnemyType.Ufo:
                     var ufoView = _instantiator.InstantiatePrefabForComponent<UfoView>(_ufoPrefab);
-                    return new UfoEnemy(ufoView, _player.PhysicsBody, _config);
+                    return new UfoEnemy(ufoView, _player, _config);
                     
                 default:
                     throw new System.ArgumentOutOfRangeException(nameof(type), type, null);

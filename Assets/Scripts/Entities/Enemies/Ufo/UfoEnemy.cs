@@ -14,19 +14,18 @@ namespace Asteroids.Entities.Enemies.Ufo
         private readonly UfoView _view;
         private IUfoState _currentState;
 
-        private readonly UfoChaseState _chaseState;
-        private readonly UfoWanderState _wanderState;
+        public UfoChaseState ChaseState { get; }
+        public UfoWanderState WanderState { get; }
 
-        public UfoEnemy(UfoView view, CustomPhysicsBody playerPhysics, EnemiesConfig config)
+        public UfoEnemy(UfoView view, PlayerController player, EnemiesConfig config)
         {
             _view = view;
             
             PhysicsBody = new CustomPhysicsBody(Vector2.zero, 0f, config.UfoSpeed, drag: 0f, radius: config.UfoRadius);
-            
             _view.Transform.localScale = new Vector3(config.UfoScale, config.UfoScale, 1f);
 
-            _chaseState = new UfoChaseState(PhysicsBody, playerPhysics, config.UfoSpeed);
-            _wanderState = new UfoWanderState(PhysicsBody, config.UfoSpeed);
+            ChaseState = new UfoChaseState(this, player, config.UfoSpeed);
+            WanderState = new UfoWanderState(this, player, config.UfoSpeed, config.UfoAgroRadius); // Передаем радиус агро!
             
             _view.DebugRadius = PhysicsBody.Radius;
         }
@@ -36,10 +35,10 @@ namespace Asteroids.Entities.Enemies.Ufo
             PhysicsBody.Position = position;
             PhysicsBody.Stop();
             
-            ChangeState(_chaseState);
+            ChangeState(WanderState);
         }
 
-        private void ChangeState(IUfoState newState)
+        public void ChangeState(IUfoState newState)
         {
             _currentState?.Exit();
             _currentState = newState;
@@ -49,7 +48,6 @@ namespace Asteroids.Entities.Enemies.Ufo
         public void Tick(float deltaTime)
         {
             _currentState?.Tick(deltaTime);
-            
             ViewTransform.position = PhysicsBody.Position;
         }
     }

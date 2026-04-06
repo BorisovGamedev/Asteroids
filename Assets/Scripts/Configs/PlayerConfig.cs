@@ -15,5 +15,7 @@
         public float BulletRadius { get; set; }
         public float BulletLifeTimeSeconds { get; set; }
         public float BulletSpawnOffset { get; set; }
+        public float InvulnerabilitySeconds { get; set; }
+        public float KnockbackForce { get; set; }
     }
 }

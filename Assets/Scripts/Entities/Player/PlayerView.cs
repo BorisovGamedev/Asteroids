@@ -8,6 +8,12 @@ namespace Asteroids.Entities
     {
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
+        
+        [SerializeField] private ParticleSystem _shieldParticles;
+        public ParticleSystem ShieldParticles => _shieldParticles;
+        
+        [SerializeField] private LineRenderer _laserLine;
+        public LineRenderer LaserLine => _laserLine;
 
         public float DebugRadius { get; set; }
 

@@ -9,5 +9,6 @@
   "SmallAsteroidScale": 0.5,
   "UfoSpeed": 1.5,
   "UfoRadius": 0.15,
-  "UfoScale": 1.0
+  "UfoScale": 1.0,
+  "UfoAgroRadius": 4.0
 }
