@@ -18,6 +18,7 @@ namespace Asteroids.App
             Container.Bind<IConfigProvider>().To<ConfigProvider>().AsSingle();
             Container.Bind<GameStateMachine>().AsSingle();
             Container.Bind<IInputService>().To<DesktopInputService>().AsSingle();
+            Container.Bind<LeaderboardService>().AsSingle();
         }
     }
 }
