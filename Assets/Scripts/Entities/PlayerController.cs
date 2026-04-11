@@ -42,6 +42,8 @@ namespace Asteroids.Entities
             _screenWrap = screenWrap;
             _input = input;
             _weaponService = weaponService;
+            _signalBus = signalBus;
+            
             _config = _configProvider.Player;
 
             PhysicsBody = new CustomPhysicsBody(Vector2.zero, 0f, _config.MaxSpeed, _config.Drag, radius: _config.PlayerRadius);
@@ -49,10 +51,8 @@ namespace Asteroids.Entities
 
             CurrentHealth = _config.MaxHealth;
             IsInvulnerable = false;
-            
-            _signalBus = signalBus;
         }
-        
+
         public void TakeDamage(Vector2 enemyPosition)
         {
             if (IsInvulnerable || IsDead) return;
@@ -69,10 +69,8 @@ namespace Asteroids.Entities
             }
             else
             {
-                Debug.Log("ИГРОК УНИЧТОЖЕН!");
                 _view.GameObject.SetActive(false);
-                
-                _signalBus.Fire<PlayerDiedSignal>();
+                _signalBus.Fire<PlayerDiedSignal>(); 
             }
         }
 
@@ -99,7 +97,7 @@ namespace Asteroids.Entities
                 _view.ShieldParticles.gameObject.SetActive(false);
             }
         }
-        
+
         public void Tick()
         {
             if (IsDead) return;
@@ -118,26 +116,44 @@ namespace Asteroids.Entities
 
         private void HandleInput()
         {
-            float turnInput = _input.Rotation;
-
-            if (turnInput != 0)
+            if (_input.IsVectorControl)
             {
-                PhysicsBody.Rotation += -turnInput * _config.RotationSpeed * Time.deltaTime;
-            }
-            
-            float forwardInput = _input.ForwardThrust;
+                Vector2 inputDir = _input.DirectionVector;
 
-            if (forwardInput > 0)
-            {
-                Vector2 thrust = PhysicsBody.ForwardDirection * (_config.Acceleration * forwardInput);
-                PhysicsBody.AddForce(thrust, Time.deltaTime);
+                if (inputDir.sqrMagnitude > 0.01f)
+                {
+                    float targetAngle = Mathf.Atan2(inputDir.y, inputDir.x) * Mathf.Rad2Deg - 90f;
+
+                    PhysicsBody.Rotation = Mathf.MoveTowardsAngle(
+                        PhysicsBody.Rotation, 
+                        targetAngle, 
+                        _config.RotationSpeed * Time.deltaTime);
+
+                    Vector2 thrust = PhysicsBody.ForwardDirection * (_config.Acceleration * inputDir.magnitude);
+                    PhysicsBody.AddForce(thrust, Time.deltaTime);
+                }
             }
-            
+            else
+            {
+                float turnInput = _input.Rotation;
+                if (turnInput != 0)
+                {
+                    PhysicsBody.Rotation += -turnInput * _config.RotationSpeed * Time.deltaTime;
+                }
+
+                float forwardInput = _input.ForwardThrust;
+                if (forwardInput > 0)
+                {
+                    Vector2 thrust = PhysicsBody.ForwardDirection * (_config.Acceleration * forwardInput);
+                    PhysicsBody.AddForce(thrust, Time.deltaTime);
+                }
+            }
+
             if (_input.IsFiring)
             {
                 _weaponService.Fire(PhysicsBody.Position, PhysicsBody.Rotation, PhysicsBody.ForwardDirection);
             }
-            
+
             if (_input.IsFiringLaser)
             {
                 _weaponService.FireLaser(PhysicsBody.Position, PhysicsBody.ForwardDirection);

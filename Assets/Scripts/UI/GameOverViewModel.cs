@@ -11,7 +11,7 @@ namespace Asteroids.UI
         private readonly GameSystemFacade _facade;
         private readonly LeaderboardService _leaderboard;
         private readonly ScoreManager _scoreManager;
-
+                
         private bool _isScoreSaved;
 
         public event Action<bool, bool, string, string> OnGameOverStateChanged;
@@ -70,7 +70,6 @@ namespace Asteroids.UI
         }
 
         public void RestartClicked() => _facade.RestartGame();
-        public void MenuClicked() => _facade.QuitToMenu();
 
         private string GetLeaderboardText()
         {

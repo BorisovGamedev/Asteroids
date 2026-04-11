@@ -20,7 +20,6 @@ namespace Asteroids.UI
 
         [Header("Standard Buttons")]
         [SerializeField] private Button _restartBtn;
-        [SerializeField] private Button _menuBtn;
 
         private GameOverViewModel _viewModel;
 
@@ -33,7 +32,6 @@ namespace Asteroids.UI
             _viewModel.OnGameOverStateChanged += SetupPanel;
             
             _restartBtn.onClick.AddListener(() => _viewModel.RestartClicked());
-            _menuBtn.onClick.AddListener(() => _viewModel.MenuClicked());
             
             _saveBtn.onClick.AddListener(() => _viewModel.SaveScore(_nameInput.text));
         }
@@ -58,7 +56,6 @@ namespace Asteroids.UI
             else
             {
                 _inputGroup.SetActive(false);
-                
                 _nameInput.text = "";
             }
         }

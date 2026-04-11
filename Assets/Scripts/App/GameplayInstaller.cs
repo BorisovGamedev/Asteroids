@@ -2,6 +2,7 @@
 using Asteroids.Entities.Weapons;
 using Asteroids.Entities.Enemies;
 using Asteroids.Entities.Enemies.Ufo;
+using Asteroids.InputService;
 using Asteroids.Physics;
 using Asteroids.Core;
 using Asteroids.UI;
@@ -16,6 +17,7 @@ namespace Asteroids.App
         [SerializeField] private BulletView _bulletPrefab;
         [SerializeField] private AsteroidView _asteroidPrefab;
         [SerializeField] private UfoView _ufoPrefab;
+        [SerializeField] private VirtualJoystick _virtualJoystick;
 
         public override void InstallBindings()
         {
@@ -40,6 +42,12 @@ namespace Asteroids.App
             
             Container.BindInterfacesAndSelfTo<GameSystemFacade>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameOverViewModel>().AsSingle();
+            
+            if (!Container.HasBinding<IInputService>())
+            {
+                Container.Bind<IInputService>().To<MobileInputService>().AsSingle()
+                    .WithArguments(_virtualJoystick);
+            }
         }
     }
 }

@@ -52,13 +52,5 @@ namespace Asteroids.Core
             
             SceneManager.LoadScene("Game"); 
         }
-
-        public void QuitToMenu()
-        {
-            _tickableManager.IsPaused = false;
-            _stateMachine.ChangeState(GameState.MainMenu);
-            
-            SceneManager.LoadScene("Boot"); 
-        }
     }
 }
