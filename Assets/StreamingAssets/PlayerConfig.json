@@ -13,5 +13,8 @@
   "BulletLifeTimeSeconds": 2.0,
   "BulletSpawnOffset": 0.01,
   "InvulnerabilitySeconds": 3.0,
-  "KnockbackForce": 15.0
+  "KnockbackForce": 15.0,
+  "LaserLength": 30.0,
+  "LaserVisualDurationMs": 200,
+  "JoystickDeadzone": 0.1
 }

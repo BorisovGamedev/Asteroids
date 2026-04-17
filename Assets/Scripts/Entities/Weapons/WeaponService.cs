@@ -132,7 +132,7 @@ namespace Asteroids.Entities.Weapons
             CurrentLaserCharges--;
             LaserCooldownTimer = 0f;
             
-            float laserLength = 30f;
+            float laserLength = _config.LaserLength;
             
             float spawnOffset = _config.PlayerRadius + _config.BulletSpawnOffset;
             
@@ -158,7 +158,7 @@ namespace Asteroids.Entities.Weapons
             _playerView.LaserLine.SetPosition(1, origin + (direction * length));
             _playerView.LaserLine.enabled = true;
 
-            await UniTask.Delay(200);
+            await UniTask.Delay(_config.LaserVisualDurationMs);
 
             _playerView.LaserLine.enabled = false;
         }

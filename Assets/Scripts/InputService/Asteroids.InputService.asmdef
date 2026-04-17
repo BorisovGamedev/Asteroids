@@ -1,7 +1,9 @@
 {
     "name": "Asteroids.InputService",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:5551e175998c96845964f56b5fc7bf9d"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

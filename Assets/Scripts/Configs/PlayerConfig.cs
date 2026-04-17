@@ -17,5 +17,8 @@
         public float BulletSpawnOffset { get; set; }
         public float InvulnerabilitySeconds { get; set; }
         public float KnockbackForce { get; set; }
+        public float LaserLength { get; set; }
+        public int LaserVisualDurationMs { get; set; }
+        public float JoystickDeadzone { get; set; }
     }
 }

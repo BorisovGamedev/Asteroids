@@ -69,28 +69,31 @@ namespace Asteroids.Entities.Enemies
             {
                 _spawnTimer = 0f;
                 
-                if (UnityEngine.Random.value < 0.2f) // Вынести в Json
+                if (UnityEngine.Random.value < _worldConfig.UfoSpawnChance)
                 {
                     SpawnUfo();
                 }
                 else
                 {
-                    SpawnAsteroid(size: 2); // Вынести в Json
+                    SpawnAsteroid(EnemyType.AsteroidBig); 
                 }
             }
         }
 
-        private void SpawnAsteroid(int size, Vector2? specificPosition = null)
+        private void SpawnAsteroid(EnemyType type, Vector2? specificPosition = null)
         {
-            IEnemy enemy = GetEnemyFromPool(size == 2 ? EnemyType.AsteroidBig : EnemyType.AsteroidSmall);
-            
+            IEnemy enemy = GetEnemyFromPool(type);
+    
             Vector2 spawnPos = specificPosition ?? GetRandomPositionOnEdge();
             Vector2 randomDirection = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
-            
+    
             float baseSpeed = UnityEngine.Random.Range(_enemiesConfig.AsteroidMinSpeed, _enemiesConfig.AsteroidMaxSpeed);
-            float finalSpeed = size == 2 ? baseSpeed : baseSpeed * _enemiesConfig.AsteroidFragmentSpeedMultiplier;
+    
+            float finalSpeed = type == EnemyType.AsteroidBig 
+                ? baseSpeed 
+                : baseSpeed * _enemiesConfig.AsteroidFragmentSpeedMultiplier;
 
-            ((Asteroid)enemy).Launch(spawnPos, randomDirection, finalSpeed, size, _enemiesConfig);
+            ((Asteroid)enemy).Launch(spawnPos, randomDirection, finalSpeed, type, _enemiesConfig);
         }
 
         private void SpawnUfo()
@@ -161,7 +164,7 @@ namespace Asteroids.Entities.Enemies
                 {
                     for (int i = 0; i < _enemiesConfig.AsteroidFragmentsCount; i++)
                     {
-                        SpawnAsteroid(size: 1, enemy.PhysicsBody.Position);
+                        SpawnAsteroid(EnemyType.AsteroidSmall, enemy.PhysicsBody.Position);
                     }
                 }
                 

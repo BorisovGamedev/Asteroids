@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Asteroids.Configs;
 using Newtonsoft.Json;
@@ -9,13 +8,14 @@ namespace Asteroids.Core
 {
     public class LeaderboardService
     {
-        private const int MaxEntries = 10;
+        private readonly int _maxEntries;
         private readonly string _filePath;
         
         public LeaderboardData Data { get; private set; }
 
-        public LeaderboardService()
+        public LeaderboardService(IConfigProvider configProvider)
         {
+            _maxEntries = configProvider.World.MaxLeaderboardEntries;
             _filePath = Path.Combine(Application.persistentDataPath, "Leaderboard.json");
             Load();
         }
@@ -45,7 +45,7 @@ namespace Asteroids.Core
             
             Data.Entries = Data.Entries
                 .OrderByDescending(e => e.Score)
-                .Take(MaxEntries)
+                .Take(_maxEntries)
                 .ToList();
                 
             Save();
@@ -60,7 +60,7 @@ namespace Asteroids.Core
         public bool IsNewHighScore(int score)
         {
             if (score <= 0) return false;
-            if (Data.Entries.Count < MaxEntries) return true;
+            if (Data.Entries.Count < _maxEntries) return true;
             
             return score > Data.Entries.Last().Score;
         }

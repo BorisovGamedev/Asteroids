@@ -9,5 +9,7 @@ namespace Asteroids.Configs
         public int MaxEnemiesOnScreen { get; set; }
         public float SpawnDelaySeconds { get; set; }
         public Dictionary<string, int> ScoreRewards { get; set; }
+        public float UfoSpawnChance { get; set; }
+        public int MaxLeaderboardEntries { get; set; }
     }
 }

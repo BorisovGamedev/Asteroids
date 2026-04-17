@@ -7,5 +7,7 @@
     "AsteroidBig": 20,
     "AsteroidSmall": 50,
     "Ufo": 100
-  }
+  },
+  "UfoSpawnChance": 0.2,
+  "MaxLeaderboardEntries": 10
 }
