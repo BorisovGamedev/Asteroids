@@ -1,6 +1,7 @@
 ﻿using Asteroids.Configs;
 using Asteroids.Core;
 using Asteroids.InputService;
+using Asteroids.Services;
 using UnityEngine;
 using Zenject;
 
@@ -21,6 +22,10 @@ namespace Asteroids.App
             Container.Bind<IConfigProvider>().To<ConfigProvider>().AsSingle();
             Container.Bind<GameStateMachine>().AsSingle();
             Container.Bind<LeaderboardService>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<AnalyticsAndAdsService>().AsSingle();
 
             bool useMobile = false;
 

@@ -37,7 +37,6 @@ namespace Asteroids.App
             
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
             
-            Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<HudViewModel>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<GameSystemFacade>().AsSingle();
