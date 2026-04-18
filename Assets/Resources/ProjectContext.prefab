@@ -74,3 +74,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f7c4cdd7a5401b965795831861ca50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ForceMobileInputInEditor: 1
