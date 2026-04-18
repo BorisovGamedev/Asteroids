@@ -5,6 +5,7 @@ using Asteroids.Core;
 using Asteroids.Entities.Weapons;
 using Asteroids.Physics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using Zenject;
 
 namespace Asteroids.Entities.Enemies
@@ -69,7 +70,7 @@ namespace Asteroids.Entities.Enemies
             {
                 _spawnTimer = 0f;
                 
-                if (UnityEngine.Random.value < _worldConfig.UfoSpawnChance)
+                if (Random.value < _worldConfig.UfoSpawnChance)
                 {
                     SpawnUfo();
                 }
@@ -85,9 +86,9 @@ namespace Asteroids.Entities.Enemies
             IEnemy enemy = GetEnemyFromPool(type);
     
             Vector2 spawnPos = specificPosition ?? GetRandomPositionOnEdge();
-            Vector2 randomDirection = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
+            Vector2 randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     
-            float baseSpeed = UnityEngine.Random.Range(_enemiesConfig.AsteroidMinSpeed, _enemiesConfig.AsteroidMaxSpeed);
+            float baseSpeed = Random.Range(_enemiesConfig.AsteroidMinSpeed, _enemiesConfig.AsteroidMaxSpeed);
     
             float finalSpeed = type == EnemyType.AsteroidBig 
                 ? baseSpeed 
@@ -177,8 +178,8 @@ namespace Asteroids.Entities.Enemies
             float w = _worldConfig.WorldWidth / 2f;
             float h = _worldConfig.WorldHeight / 2f;
 
-            if (UnityEngine.Random.value > 0.5f) return new Vector2(UnityEngine.Random.value > 0.5f ? w : -w, UnityEngine.Random.Range(-h, h));
-            return new Vector2(UnityEngine.Random.Range(-w, w), UnityEngine.Random.value > 0.5f ? h : -h);
+            if (Random.value > 0.5f) return new Vector2(Random.value > 0.5f ? w : -w, Random.Range(-h, h));
+            return new Vector2(Random.Range(-w, w), Random.value > 0.5f ? h : -h);
         }
         
         private void OnLaserFired(LaserFiredSignal signal)
