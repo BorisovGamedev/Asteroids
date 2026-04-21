@@ -1,0 +1,276 @@
+@startuml
+class BootInstaller {
+}
+class GameBootstrapper {
+    - _configProvider : IConfigProvider
+    - _stateMachine : GameStateMachine
+}
+class GameplayInstaller {
+}
+class ProjectInstaller {
+    + ForceMobileInputInEditor : bool
+}
+class ConfigProvider {
+}
+class EnemiesConfig {
+}
+interface IConfigProvider {
+}
+class LeaderboardEntry {
+}
+class LeaderboardData {
+    + Entries : List<LeaderboardEntry>
+}
+class PlayerConfig {
+}
+class WorldConfig {
+}
+class GameStateMachine {
+}
+class GameSystemFacade {
+    - _stateMachine : GameStateMachine
+    - _signalBus : SignalBus
+    - _tickableManager : TickableManager
+}
+class LaserFiredSignal {
+}
+class EnemyKilledSignal {
+}
+class PlayerDiedSignal {
+}
+class LeaderboardService {
+    - _maxEntries : int
+    - _filePath : string
+}
+class ScoreManager {
+    - _signalBus : SignalBus
+    - _configProvider : IConfigProvider
+    - _stateMachine : GameStateMachine
+}
+class Asteroid {
+    + ViewTransform : Transform
+    + GameObject : GameObject
+    - _view : AsteroidView
+}
+class AsteroidView {
+    + Transform : Transform
+    + GameObject : GameObject
+}
+class EnemyFactory {
+    - _instantiator : IInstantiator
+    - _asteroidPrefab : AsteroidView
+    - _ufoPrefab : UfoView
+    - _player : PlayerController
+    - _config : EnemiesConfig
+}
+class EnemySpawner {
+    - _enemiesConfig : EnemiesConfig
+    - _worldConfig : WorldConfig
+    - _screenWrap : ScreenWrapService
+    - _player : PlayerController
+    - _weaponService : WeaponService
+    - _factory : EnemyFactory
+    - _enemyPool : CustomObjectPool<IEnemy>
+    - _signalBus : SignalBus
+    - _spawnTimer : float
+}
+interface IEnemy {
+}
+interface IUfoState {
+}
+class UfoChaseState {
+    - _ufo : UfoEnemy
+    - _player : PlayerController
+    - _speed : float
+}
+class UfoEnemy {
+    + Type : EnemyType
+    + ViewTransform : Transform
+    + GameObject : GameObject
+    - _view : UfoView
+    - _currentState : IUfoState
+}
+class UfoView {
+    + Transform : Transform
+    + GameObject : GameObject
+}
+class UfoWanderState {
+    - _ufo : UfoEnemy
+    - _player : PlayerController
+    - _speed : float
+    - _agroRadiusSqr : float
+    - _wanderDirection : Vector2
+}
+class PlayerView {
+    + Transform : Transform
+    + GameObject : GameObject
+    + ShieldParticles : ParticleSystem
+    + LaserLine : LineRenderer
+}
+class PlayerController {
+    + IsDead : bool
+    - _view : PlayerView
+    - _configProvider : IConfigProvider
+    - _screenWrap : ScreenWrapService
+    - _input : IInputService
+    - _weaponService : WeaponService
+    - _config : PlayerConfig
+    - _signalBus : SignalBus
+    - _invulnerabilityCts : CancellationTokenSource
+}
+class Bullet {
+}
+class BulletView {
+    + Transform : Transform
+    + GameObject : GameObject
+}
+class WeaponService {
+    - SecondsToMilliseconds : float
+    - _instantiator : IInstantiator
+    - _bulletPrefab : BulletView
+    - _config : PlayerConfig
+    - _screenWrap : ScreenWrapService
+    - _signalBus : SignalBus
+    - _playerView : PlayerView
+    - _bulletPool : CustomObjectPool<Bullet>
+    - _lastFireTime : float
+}
+class DesktopInputService {
+    + IsVectorControl : bool
+    + DirectionVector : Vector2
+    + IsFiring : bool
+    + IsFiringLaser : bool
+}
+interface IInputService {
+}
+class MobileInputCatcher {
+    - _mobileInput : MobileInputService
+}
+class MobileInputService {
+    - _joystick : VirtualJoystick
+    - _deadzone : float
+    + IsFiringPressed : bool
+    + IsLaserPressed : bool
+    + IsVectorControl : bool
+    + DirectionVector : Vector2
+    + ForwardThrust : float
+    + Rotation : float
+    + IsFiring : bool
+    + IsFiringLaser : bool
+}
+class VirtualJoystick {
+    - _startPosition : Vector2
+}
+class CustomPhysicsBody {
+    + ForwardDirection : Vector2
+    - _rotation : float
+}
+class PhysicsDebugger {
+    + showCollisionRadius : bool
+    + IsEnabled : bool
+}
+class PhysicsMath {
+}
+class ScreenWrapService {
+    - _worldWidth : float
+    - _worldHeight : float
+}
+class GameOverView {
+    - _viewModel : GameOverViewModel
+}
+class GameOverViewModel {
+    - _stateMachine : GameStateMachine
+    - _facade : GameSystemFacade
+    - _leaderboard : LeaderboardService
+    - _scoreManager : ScoreManager
+    - _isScoreSaved : bool
+}
+class HudView {
+    - _viewModel : HudViewModel
+}
+class HudViewModel {
+    - _player : PlayerController
+    - _weapon : WeaponService
+    - _score : ScoreManager
+    - _config : PlayerConfig
+}
+MonoInstaller <|-- BootInstaller
+IInitializable <|-- GameBootstrapper
+MonoInstaller <|-- GameplayInstaller
+MonoInstaller <|-- ProjectInstaller
+IConfigProvider <|-- ConfigProvider
+IInitializable <|-- GameSystemFacade
+IDisposable <|.. GameSystemFacade
+IInitializable <|-- ScoreManager
+IDisposable <|.. ScoreManager
+IEnemy <|-- Asteroid
+MonoBehaviour <|-- AsteroidView
+ITickable <|-- EnemySpawner
+IDisposable <|.. EnemySpawner
+IUfoState <|-- UfoChaseState
+IEnemy <|-- UfoEnemy
+MonoBehaviour <|-- UfoView
+IUfoState <|-- UfoWanderState
+MonoBehaviour <|-- PlayerView
+ITickable <|-- PlayerController
+MonoBehaviour <|-- BulletView
+ITickable <|-- WeaponService
+IDisposable <|.. WeaponService
+IInputService <|-- DesktopInputService
+MonoBehaviour <|-- MobileInputCatcher
+IInputService <|-- MobileInputService
+MonoBehaviour <|-- VirtualJoystick
+IPointerDownHandler <|.. VirtualJoystick
+IPointerUpHandler <|.. VirtualJoystick
+IDragHandler <|.. VirtualJoystick
+MonoBehaviour <|-- PhysicsDebugger
+MonoBehaviour <|-- GameOverView
+IInitializable <|-- GameOverViewModel
+IDisposable <|.. GameOverViewModel
+MonoBehaviour <|-- HudView
+ITickable <|-- HudViewModel
+GameBootstrapper --> IConfigProvider : field
+GameBootstrapper --> GameStateMachine : field
+GameSystemFacade --> GameStateMachine : field
+ScoreManager --> IConfigProvider : field
+ScoreManager --> GameStateMachine : field
+Asteroid --> AsteroidView : field
+EnemyFactory --> AsteroidView : field
+EnemyFactory --> UfoView : field
+EnemyFactory --> PlayerController : field
+EnemyFactory --> EnemiesConfig : field
+EnemySpawner --> EnemiesConfig : field
+EnemySpawner --> WorldConfig : field
+EnemySpawner --> ScreenWrapService : field
+EnemySpawner --> PlayerController : field
+EnemySpawner --> WeaponService : field
+EnemySpawner --> EnemyFactory : field
+UfoChaseState --> UfoEnemy : field
+UfoChaseState --> PlayerController : field
+UfoEnemy --> UfoView : field
+UfoEnemy --> IUfoState : field
+UfoWanderState --> UfoEnemy : field
+UfoWanderState --> PlayerController : field
+PlayerController --> PlayerView : field
+PlayerController --> IConfigProvider : field
+PlayerController --> ScreenWrapService : field
+PlayerController --> IInputService : field
+PlayerController --> WeaponService : field
+PlayerController --> PlayerConfig : field
+WeaponService --> BulletView : field
+WeaponService --> PlayerConfig : field
+WeaponService --> ScreenWrapService : field
+WeaponService --> PlayerView : field
+MobileInputCatcher --> MobileInputService : field
+MobileInputService --> VirtualJoystick : field
+GameOverView --> GameOverViewModel : field
+GameOverViewModel --> GameStateMachine : field
+GameOverViewModel --> GameSystemFacade : field
+GameOverViewModel --> LeaderboardService : field
+GameOverViewModel --> ScoreManager : field
+HudView --> HudViewModel : field
+HudViewModel --> PlayerController : field
+HudViewModel --> WeaponService : field
+HudViewModel --> ScoreManager : field
+HudViewModel --> PlayerConfig : field
+@enduml
