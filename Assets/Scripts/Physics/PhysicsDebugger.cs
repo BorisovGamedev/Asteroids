@@ -10,7 +10,7 @@ namespace Asteroids.Physics
 
         public static bool IsEnabled;
 
-        private void Update()
+        private void OnValidate()
         {
             IsEnabled = showCollisionRadius;
         }

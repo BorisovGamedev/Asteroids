@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Asteroids.Configs;
 using Asteroids.Core;
 using Asteroids.Entities.Weapons;

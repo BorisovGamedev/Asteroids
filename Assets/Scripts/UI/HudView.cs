@@ -6,12 +6,12 @@ namespace Asteroids.UI
 {
     public class HudView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _coordinatesTxt;
-        [SerializeField] private TextMeshProUGUI _rotationTxt;
-        [SerializeField] private TextMeshProUGUI _speedTxt;
-        [SerializeField] private TextMeshProUGUI _laserTxt;
-        [SerializeField] private TextMeshProUGUI _scoreTxt;
-        [SerializeField] private TextMeshProUGUI _healthTxt;
+        [SerializeField] private TextMeshProUGUI _coordinatesText;
+        [SerializeField] private TextMeshProUGUI _rotationText;
+        [SerializeField] private TextMeshProUGUI _speedText;
+        [SerializeField] private TextMeshProUGUI _laserText;
+        [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private TextMeshProUGUI _healthText;
 
         private HudViewModel _viewModel;
 
@@ -25,12 +25,12 @@ namespace Asteroids.UI
         {
             if (_viewModel == null) return;
 
-            _coordinatesTxt.text = _viewModel.CoordinatesText;
-            _rotationTxt.text = _viewModel.RotationText;
-            _speedTxt.text = _viewModel.SpeedText;
-            _laserTxt.text = _viewModel.LaserText;
-            _scoreTxt.text = _viewModel.ScoreText;
-            _healthTxt.text = _viewModel.HealthText;
+            _coordinatesText.text = _viewModel.CoordinatesText;
+            _rotationText.text = _viewModel.RotationText;
+            _speedText.text = _viewModel.SpeedText;
+            _laserText.text = _viewModel.LaserText;
+            _scoreText.text = _viewModel.ScoreText;
+            _healthText.text = _viewModel.HealthText;
         }
     }
 }

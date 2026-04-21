@@ -3,11 +3,14 @@ using Asteroids.Core;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
+using Debug = UnityEngine.Debug;
 
 namespace Asteroids.App
 {
     public class GameBootstrapper : IInitializable
     {
+        public const string GameSceneName = "Game";
+        
         private readonly IConfigProvider _configProvider;
         private readonly GameStateMachine _stateMachine;
 
@@ -25,13 +28,13 @@ namespace Asteroids.App
 
         private async UniTaskVoid LoadGameAsync()
         {
-            UnityEngine.Debug.Log("Загрузка конфигов...");
+            Debug.Log("Загрузка конфигов...");
             await _configProvider.LoadAllConfigsAsync();
-            UnityEngine.Debug.Log($"Конфиги загружены! Здоровье игрока: {_configProvider.Player.MaxHealth}");
+            Debug.Log($"Конфиги загружены! Здоровье игрока: {_configProvider.Player.MaxHealth}");
 
             _stateMachine.ChangeState(GameState.MainMenu);
             
-            SceneManager.LoadScene("Game"); 
+            SceneManager.LoadScene(GameSceneName); 
         }
     }
 }

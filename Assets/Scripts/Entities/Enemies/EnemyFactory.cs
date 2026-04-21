@@ -1,6 +1,5 @@
 ﻿using Asteroids.Configs;
 using Asteroids.Entities.Enemies.Ufo;
-using UnityEngine;
 using Zenject;
 
 namespace Asteroids.Entities.Enemies

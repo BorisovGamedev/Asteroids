@@ -6,6 +6,8 @@ namespace Asteroids.Core
 {
     public class GameSystemFacade : IInitializable, IDisposable
     {
+        public const string GameSceneName = "Game";
+        
         private readonly GameStateMachine _stateMachine;
         private readonly SignalBus _signalBus;
         
@@ -49,8 +51,7 @@ namespace Asteroids.Core
         public void RestartGame()
         {
             _tickableManager.IsPaused = false;
-            
-            SceneManager.LoadScene("Game"); 
+            SceneManager.LoadScene(GameSceneName); 
         }
     }
 }

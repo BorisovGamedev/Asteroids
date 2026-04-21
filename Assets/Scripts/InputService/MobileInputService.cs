@@ -8,8 +8,14 @@ namespace Asteroids.InputService
         private readonly VirtualJoystick _joystick;
         private readonly float _deadzone;
         
-        public bool IsFiringPressed;
-        public bool IsLaserPressed;
+        private bool _isFiringPressed;
+        private bool _isLaserPressed;
+        
+        public bool IsFiring => _isFiringPressed;
+        public bool IsFiringLaser => _isLaserPressed;
+        
+        public void SetFiring(bool isFiring) => _isFiringPressed = isFiring;
+        public void SetLaser(bool isLaser) => _isLaserPressed = isLaser;
 
         public MobileInputService(VirtualJoystick joystick, IConfigProvider configProvider)
         {
@@ -23,11 +29,5 @@ namespace Asteroids.InputService
         public float ForwardThrust => _joystick.InputVector.magnitude > _deadzone ? 1f : 0f;
 
         public float Rotation => 0f;
-
-        public bool IsFiring => IsFiringPressed;
-        public bool IsFiringLaser => IsLaserPressed;
-
-        public void SetFiring(bool isFiring) => IsFiringPressed = isFiring;
-        public void SetLaser(bool isLaser) => IsLaserPressed = isLaser;
     }
 }
