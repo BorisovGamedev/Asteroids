@@ -44,8 +44,7 @@ namespace Asteroids.App
             
             if (!Container.HasBinding<IInputService>())
             {
-                Container.Bind<IInputService>().To<MobileInputService>().AsSingle()
-                    .WithArguments(_virtualJoystick);
+                Container.BindInterfacesAndSelfTo<MobileInputService>().AsSingle().WithArguments(_virtualJoystick);
             }
         }
     }

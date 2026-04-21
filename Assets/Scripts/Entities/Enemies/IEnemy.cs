@@ -1,14 +1,9 @@
 ﻿using Asteroids.Physics;
+using Asteroids.Configs;
 using UnityEngine;
 
 namespace Asteroids.Entities.Enemies
 {
-    public enum EnemyType
-    {
-        AsteroidBig,
-        AsteroidSmall,
-        Ufo
-    }
     
     public interface IEnemy
     {

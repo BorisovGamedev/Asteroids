@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 using Cysharp.Threading.Tasks;
 
 namespace Asteroids.Configs
@@ -14,9 +15,15 @@ namespace Asteroids.Configs
 
         public async UniTask LoadAllConfigsAsync()
         {
-            Player = await LoadJsonAsync<PlayerConfig>("PlayerConfig.json");
-            Enemies = await LoadJsonAsync<EnemiesConfig>("EnemiesConfig.json");
-            World = await LoadJsonAsync<WorldConfig>("WorldConfig.json");
+            var (player, enemies, world) = await UniTask.WhenAll(
+                LoadJsonAsync<PlayerConfig>("PlayerConfig.json"),
+                LoadJsonAsync<EnemiesConfig>("EnemiesConfig.json"),
+                LoadJsonAsync<WorldConfig>("WorldConfig.json")
+            );
+
+            Player = player;
+            Enemies = enemies;
+            World = world;
         }
 
         private async UniTask<T> LoadJsonAsync<T>(string fileName)
@@ -24,7 +31,6 @@ namespace Asteroids.Configs
             string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
             string jsonText;
 
-            // Если это Android или WebGL, используем UnityWebRequest
             if (filePath.Contains("://") || filePath.Contains(":///"))
             {
                 using var request = UnityWebRequest.Get(filePath);
@@ -32,15 +38,13 @@ namespace Asteroids.Configs
 
                 if (request.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogError($"Failed to load config {fileName}: {request.error}");
-                    return default;
+                    throw new Exception($"Failed to load config {fileName}: {request.error}");
                 }
-                
                 jsonText = request.downloadHandler.text;
             }
             else
             {
-                // Для Windows, Mac, Editor
+                if (!File.Exists(filePath)) throw new FileNotFoundException($"File not found: {filePath}");
                 jsonText = await File.ReadAllTextAsync(filePath);
             }
 

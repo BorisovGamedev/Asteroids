@@ -9,19 +9,17 @@ namespace Asteroids.InputService
         [SerializeField] private EventTrigger _fireButtonTrigger;
         [SerializeField] private EventTrigger _laserButtonTrigger;
 
+        [InjectOptional] 
         private MobileInputService _mobileInput;
-
-        [Inject]
-        public void Construct(IInputService inputService)
+        
+        private void Start()
         {
-            _mobileInput = inputService as MobileInputService;
-            
             if (_mobileInput == null)
             {
                 gameObject.SetActive(false);
                 return;
             }
-
+            
             SetupTriggers();
         }
 

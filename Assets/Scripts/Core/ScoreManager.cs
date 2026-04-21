@@ -47,6 +47,8 @@ namespace Asteroids.Core
         private void OnEnemyKilled(EnemyKilledSignal signal)
         {
             WorldConfig worldConfig = _configProvider.World;
+            
+            if (worldConfig?.ScoreRewards == null) return;
 
             if (worldConfig == null || worldConfig.ScoreRewards == null)
             {
@@ -54,7 +56,7 @@ namespace Asteroids.Core
                 return;
             }
 
-            if (worldConfig.ScoreRewards.TryGetValue(signal.EnemyTypeStr, out int reward))
+            if (worldConfig.ScoreRewards.TryGetValue(signal.Type, out int reward))
             {
                 CurrentScore += reward;
             }

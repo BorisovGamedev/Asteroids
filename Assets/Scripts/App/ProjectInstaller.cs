@@ -24,7 +24,8 @@ namespace Asteroids.App
             Container.Bind<GameStateMachine>().AsSingle();
             Container.Bind<LeaderboardService>().AsSingle();
             Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<AnalyticsAndAdsService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AnalyticsService>().AsSingle();
 
             bool useMobile = false;
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Asteroids.Configs;
 
 namespace Asteroids.Core
 {
@@ -18,8 +19,9 @@ namespace Asteroids.Core
     
     public class EnemyKilledSignal
     {
-        public string EnemyTypeStr { get; }
-        public EnemyKilledSignal(string enemyTypeStr) => EnemyTypeStr = enemyTypeStr;
+        public EnemyType Type { get; }
+            
+        public EnemyKilledSignal(EnemyType type) => Type = type;
     }
     
     public class PlayerDiedSignal { }

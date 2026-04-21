@@ -145,7 +145,7 @@ namespace Asteroids.Entities.Enemies
                 {
                     if (bullet.PhysicsBody.IsCollidingWith(enemy.PhysicsBody))
                     {
-                        _signalBus.Fire(new EnemyKilledSignal(enemy.Type.ToString()));
+                        _signalBus.Fire(new EnemyKilledSignal(enemy.Type));
                         
                         enemiesToDestroy.Add(enemy);
                         bulletsToDestroy.Add(bullet);
@@ -190,7 +190,7 @@ namespace Asteroids.Entities.Enemies
             {
                 if (PhysicsMath.RayIntersectsCircle(signal.Origin, signal.Direction, signal.Length, enemy.PhysicsBody.Position, enemy.PhysicsBody.Radius))
                 {
-                    _signalBus.Fire(new EnemyKilledSignal(enemy.Type.ToString()));
+                    _signalBus.Fire(new EnemyKilledSignal(enemy.Type));
                     enemiesToDestroy.Add(enemy);
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Asteroids.Core;
+using Asteroids.Configs;
 using Zenject;
 
 namespace Asteroids.UI
@@ -11,6 +12,7 @@ namespace Asteroids.UI
         private readonly GameSystemFacade _facade;
         private readonly LeaderboardService _leaderboard;
         private readonly ScoreManager _scoreManager;
+        private readonly IConfigProvider _configProvider;
                 
         private bool _isScoreSaved;
 
