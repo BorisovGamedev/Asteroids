@@ -22,7 +22,8 @@ namespace Asteroids.Entities
         private readonly IConfigProvider _configProvider;
         private readonly ScreenWrapService _screenWrap;
         private readonly IInputService _input;
-        private readonly WeaponService _weaponService;
+        private readonly BulletService  _bulletService;
+        private readonly LaserService  _laserService;
         private readonly PlayerConfig _config;
         private readonly SignalBus _signalBus;
 
@@ -33,24 +34,28 @@ namespace Asteroids.Entities
             IConfigProvider configProvider,
             ScreenWrapService screenWrap,
             IInputService input,
-            WeaponService weaponService,
+            BulletService bulletService,
+            LaserService laserService,
             SignalBus signalBus)
         {
             _view = view;
-            _configProvider = configProvider;
             _screenWrap = screenWrap;
             _input = input;
-            _weaponService = weaponService;
+            _bulletService = bulletService;
+            _laserService = laserService;
             _signalBus = signalBus;
-            
-            _config = _configProvider.Player;
+    
+            _config = configProvider.Player;
 
             PhysicsBody = new CustomPhysicsBody(Vector2.zero, 0f, _config.MaxSpeed, _config.Drag, radius: _config.PlayerRadius);
             _view.DebugRadius = PhysicsBody.Radius;
 
             CurrentHealth = _config.MaxHealth;
             IsInvulnerable = false;
+
+            _laserService.OnLaserFiredVisual += HandleLaserVisual;
         }
+
 
         public void TakeDamage(Vector2 enemyPosition)
         {
@@ -150,13 +155,18 @@ namespace Asteroids.Entities
 
             if (_input.IsFiring)
             {
-                _weaponService.Fire(PhysicsBody.Position, PhysicsBody.Rotation, PhysicsBody.ForwardDirection);
+                _bulletService.Fire(PhysicsBody.Position, PhysicsBody.Rotation, PhysicsBody.ForwardDirection);
             }
 
             if (_input.IsFiringLaser)
             {
-                _weaponService.FireLaser(PhysicsBody.Position, PhysicsBody.ForwardDirection);
+                _laserService.FireLaser(PhysicsBody.Position, PhysicsBody.ForwardDirection);
             }
+        }
+        
+        private void HandleLaserVisual(Vector2 origin, Vector2 dir, float length, int duration)
+        {
+            _view.ShowLaserVisualAsync(origin, dir, length, duration).Forget();
         }
     }
 }

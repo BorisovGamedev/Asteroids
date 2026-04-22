@@ -23,28 +23,30 @@ namespace Asteroids.App
         {
             Container.Bind<ScreenWrapService>().AsSingle();
 
-            Container.Bind<PlayerView>()
-                .FromComponentInNewPrefab(_playerPrefab)
-                .AsSingle();
-            
-            Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle();
-            
-            Container.BindInterfacesAndSelfTo<WeaponService>().AsSingle()
-                .WithArguments(_bulletPrefab);
-            
-            Container.Bind<EnemyFactory>().AsSingle()
-                .WithArguments(_asteroidPrefab, _ufoPrefab);
-            
-            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-            
-            Container.BindInterfacesAndSelfTo<HudViewModel>().AsSingle();
-            
             Container.BindInterfacesAndSelfTo<GameSystemFacade>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<BulletService>().AsSingle()
+                .WithArguments(_bulletPrefab);
+            Container.BindInterfacesAndSelfTo<LaserService>().AsSingle();
+
+            Container.Bind<PlayerView>().FromComponentInNewPrefab(_playerPrefab).AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle();
+
+            Container.Bind<EnemyFactory>().AsSingle().WithArguments(_asteroidPrefab, _ufoPrefab);
+
+            Container.Bind<EnemyManager>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyMovementService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyCollisionService>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<HudViewModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameOverViewModel>().AsSingle();
-            
+
             if (!Container.HasBinding<IInputService>())
             {
-                Container.BindInterfacesAndSelfTo<MobileInputService>().AsSingle().WithArguments(_virtualJoystick);
+                Container.BindInterfacesAndSelfTo<MobileInputService>().AsSingle()
+                    .WithArguments(_virtualJoystick);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Asteroids.UI
     public class HudViewModel : ITickable
     {
         private readonly PlayerController _player;
-        private readonly WeaponService _weapon;
+        private readonly LaserService _laserService;
         private readonly ScoreManager _score;
         private readonly PlayerConfig _config;
 
@@ -21,10 +21,10 @@ namespace Asteroids.UI
         public string ScoreText { get; private set; }
         public string HealthText { get; private set; }
 
-        public HudViewModel(PlayerController player, WeaponService weapon, ScoreManager score, IConfigProvider configProvider)
+        public HudViewModel(PlayerController player, LaserService laserService, ScoreManager score, IConfigProvider configProvider)
         {
             _player = player;
-            _weapon = weapon;
+            _laserService = laserService;
             _score = score;
             _config = configProvider.Player;
         }
@@ -39,14 +39,14 @@ namespace Asteroids.UI
             float speed = _player.PhysicsBody.Velocity.magnitude;
             SpeedText = $"SPD: {Mathf.RoundToInt(speed)}";
 
-            if (_weapon.CurrentLaserCharges >= _config.MaxLaserCharges)
+            if (_laserService.CurrentLaserCharges >= _config.MaxLaserCharges)
             {
-                LaserText = $"LASER: {_weapon.CurrentLaserCharges} (READY)";
+                LaserText = $"LASER: {_laserService.CurrentLaserCharges} (READY)";
             }
             else
             {
-                float cooldownLeft = _config.LaserCooldownSeconds - _weapon.LaserCooldownTimer;
-                LaserText = $"LASER: {_weapon.CurrentLaserCharges} ({cooldownLeft:F1}s)";
+                float cooldownLeft = _config.LaserCooldownSeconds - _laserService.LaserCooldownTimer;
+                LaserText = $"LASER: {_laserService.CurrentLaserCharges} ({cooldownLeft:F1}s)";
             }
 
             ScoreText = $"SCORE: {_score.CurrentScore}";

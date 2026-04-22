@@ -1,4 +1,6 @@
-﻿using Asteroids.Physics;
+﻿using System.Threading;
+using Asteroids.Physics;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Asteroids.Entities
@@ -8,15 +10,43 @@ namespace Asteroids.Entities
     {
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
-        
+
         [SerializeField] private ParticleSystem _shieldParticles;
         public ParticleSystem ShieldParticles => _shieldParticles;
-        
-        [SerializeField] private LineRenderer _laserLine;
-        public LineRenderer LaserLine => _laserLine;
 
+        [SerializeField] private LineRenderer _laserLine;
         public float DebugRadius { get; set; }
 
+        private CancellationTokenSource _laserCts;
+
+        private void Start()
+        {
+            _laserLine.enabled = false;
+        }
+
+        public async UniTask ShowLaserVisualAsync(Vector2 origin, Vector2 direction, float length, int durationMs)
+        {
+            _laserCts?.Cancel();
+            _laserCts?.Dispose();
+            _laserCts = new CancellationTokenSource();
+
+            _laserLine.SetPosition(0, origin);
+            _laserLine.SetPosition(1, origin + (direction * length));
+            _laserLine.enabled = true;
+
+            bool isCancelled = await UniTask.Delay(durationMs, cancellationToken: _laserCts.Token).SuppressCancellationThrow();
+
+            if (!isCancelled)
+            {
+                _laserLine.enabled = false;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _laserCts?.Cancel();
+            _laserCts?.Dispose();
+        }
         private void OnDrawGizmos()
         {
             if (!PhysicsDebugger.IsEnabled) return;
