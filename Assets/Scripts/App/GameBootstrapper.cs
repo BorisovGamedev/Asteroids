@@ -26,15 +26,11 @@ namespace Asteroids.App
             LoadGameAsync().Forget();
         }
 
-        private async UniTaskVoid LoadGameAsync()
+        private async UniTask LoadGameAsync()
         {
-            Debug.Log("Загрузка конфигов...");
             await _configProvider.LoadAllConfigsAsync();
-            Debug.Log($"Конфиги загружены! Здоровье игрока: {_configProvider.Player.MaxHealth}");
-
             _stateMachine.ChangeState(GameState.MainMenu);
-            
-            SceneManager.LoadScene(GameSceneName); 
+            SceneManager.LoadScene(GameSystemFacade.GameSceneName); 
         }
     }
 }
